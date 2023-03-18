@@ -1,35 +1,20 @@
 const express = require('express');
 const app = express();
 const port = 3000;
-const birdsRoutes = require('./birds.js');
+const mongoose = require('mongoose');
+const dotenv = require('dotenv').config();
+const connectToMongo = require('./connectToMongo');
+const todoRouter = require('./routes/api/todos.js');
 
-/*
-const myLogger = (req, res, next) => {
-  console.log('LOGGER!!!');
-  next();  // calling next passes on the request to the next middleware function 
-};
+// Parse request body from json string to JS object,
+// without `app.use(express.json())`, req.body is undefined
+app.use(express.json());
 
-app.use(myLogger);
-*/
+// Connect to MongoDB database
+connectToMongo();
 
-const requestTime = (req, res, next) => {
-  req.requestTime = Date.now();
-  next();
-};
-
-app.use(requestTime);
-
-app.get("/", (req, res) => {
-  let responseText = 'Hello World!<br>'
-  responseText += `<small>Requested at: ${req.requestTime}</small>`
-  res.send(responseText)
-});
-
-app.post("/", (req, res) => {
-  res.send("Got a Post Request");
-});
-
-app.use("/birds", birdsRoutes);
+// Define paths and middleware functions
+app.use('/api/todos', todoRouter);
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);

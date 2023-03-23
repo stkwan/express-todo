@@ -35,8 +35,8 @@ router.post("/", (req, res, next) => {
 
 // UPDATE a todo
 router.put("/:id", (req, res, next) => {
-  Todo.findByIdAndUpdate(req.params.id, req.body)
-    .then(todo => res.json({ msg: 'Successfully updated todo!'}))
+  Todo.findByIdAndUpdate(req.params.id, req.body, {new: true})
+    .then(todo => res.json(todo))
     .catch(err => res.status(400).json({ error: 'Unable to update this todo'}));
 });
 

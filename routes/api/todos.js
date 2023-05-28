@@ -9,18 +9,18 @@ const Todo = require('../../models/TodoModel.js');
 router.get("/", (req, res, next) => {
   Todo.find()
     .then(todos => {
-      res.json(todos)
+      res.status(200).json(todos)
     })
-    .catch(err => res.status(404).json({noTodosFound: 'No todos found'}));
+    .catch(err => res.status(404).json({ error: err.message }));
 });
 
 // GET a single todo by id
 router.get("/:id", (req, res, next) => {
   Todo.findById(req.params.id)
     .then(todo => {
-      res.json(todo)
+      res.status(200).json(todo)
     })
-    .catch(err => res.status(404).json({ todoNotFound: 'Todo not found' }));
+    .catch(err => res.status(404).json({ error: err.message }));
 });
 
 // CREATE a new todo
@@ -28,25 +28,25 @@ router.post("/", (req, res, next) => {
   console.log(req.body);
   Todo.create(req.body)
     .then(todo => {
-      res.json({ msg: 'Sucessfully added todo!' })
+      res.status(200).json(todo);
     })
-    .catch(err => res.status(400).json({ error: 'Unable to add this book'}));
+    .catch(err => res.status(400).json({ error: err.message }));
 });
 
 // UPDATE a todo
 router.put("/:id", (req, res, next) => {
   Todo.findByIdAndUpdate(req.params.id, req.body, {new: true})
-    .then(todo => res.json(todo))
-    .catch(err => res.status(400).json({ error: 'Unable to update this todo'}));
+    .then(todo => res.status(200).json(todo))
+    .catch(err => res.status(400).json({ error: err.message }));
 });
 
 // DELETE a todo
 router.delete("/:id", (req, res, next) => {
   Todo.findByIdAndDelete(req.params.id)
     .then(todo => {
-      res.json({ msg: 'Successfully deleted todo!' });
+      res.status(200).json({ msg: 'Successfully deleted todo!' });
     })
-    .catch(err => res.status(400).json({ error: 'Unable to update this todo' }));
+    .catch(err => res.status(400).json({ error: err.message }));
 });
 
 module.exports = router;

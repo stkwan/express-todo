@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const port = 3000;
+//const port = 3000;
 const mongoose = require('mongoose');
 const dotenv = require('dotenv').config();
 const connectToMongo = require('./connectToMongo');
@@ -17,9 +17,15 @@ app.use(handlePreflight);
 // Connect to MongoDB database
 connectToMongo();
 
+// App use home
+app.get('/', (req, res, next) => {
+  res.send('hello world');
+})
+
 // Define paths and respective middleware functions
 app.use('/api/todos', todoRouter);
 
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Example app listening on port ${PORT}`);
 });

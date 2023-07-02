@@ -11,7 +11,7 @@ The backend of this application uses an Express/NodeJS framework in conjunction 
 ### Dependencies
 
 * Node v18.14.0
-* See pagckage.json for libraries and dependencies
+* See package.json for libraries and dependencies
 
 ### Installing
 
